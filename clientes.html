@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoffeeTech - Clientes (Fase 4 CRUD)</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <header id="coffeetech-navbar"></header>
+
+  <main class="page-container">
+    <div class="page-header">
+      <div>
+        <span class="phase-tag">Fase 4. Aplicación Web - CRUD con Validación</span>
+        <h1>👥 Gestión de Clientes</h1>
+        <p>Colección <code>Clientes</code> en Firestore (<code>Nombre</code>, <code>Correo</code>, <code>Telefono</code>, <code>Fecha</code>).</p>
+      </div>
+    </div>
+
+    <div id="role-notice-clientes" class="alert alert-warning hidden">
+      <strong>Acceso restringido (Rol Invitado):</strong> Se requiere rol <strong>Empleado</strong> o <strong>Administrador</strong> para registrar o modificar clientes.
+    </div>
+
+    <!-- Formulario CRUD Clientes -->
+    <section class="card">
+      <div class="card-header">
+        <h3 id="cli-form-title">Registrar nuevo cliente</h3>
+        <span id="cli-next-id-hint" class="id-pill">ID automático: Cliente_...</span>
+      </div>
+
+      <div id="cli-validation-msg" class="alert alert-error hidden"></div>
+
+      <form id="form-cliente" class="form-grid" novalidate>
+        <input type="hidden" id="cli-id">
+
+        <div class="form-group">
+          <label for="cli-nombre">Nombre del cliente *</label>
+          <input type="text" id="cli-nombre" placeholder="Ej. Maria, Antonio, Pepe" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cli-telefono">Teléfono (10 dígitos) *</label>
+          <input type="tel" id="cli-telefono" placeholder="Ej. 6142039418" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cli-correo">Correo electrónico *</label>
+          <input type="email" id="cli-correo" placeholder="Ej. maria.felix@gmail.com" required>
+        </div>
+
+        <div style="display:flex;gap:0.6rem;">
+          <button type="submit" id="btn-cli-guardar" class="btn btn-primary">Guardar cliente</button>
+          <button type="button" id="btn-cli-cancelar" class="btn btn-secondary hidden">Cancelar</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Tabla de Clientes -->
+    <section class="card">
+      <div class="card-header">
+        <h3>Directorio de clientes en Firestore (<span id="count-clientes">0</span>)</h3>
+        <input type="text" id="filtro-cli-texto" placeholder="Buscar por ID, nombre, teléfono o correo..." style="width:auto;min-width:260px;">
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Teléfono</th>
+              <th>Correo</th>
+              <th>Fecha de Registro</th>
+              <th>Pedidos</th>
+              <th>Acciones CRUD</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-clientes-body">
+            <tr><td colspan="7" class="empty-state">Cargando clientes desde Firestore...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/clientes.js"></script>
+</body>
+</html>

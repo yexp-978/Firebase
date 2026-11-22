@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Compatible tanto con Usuario_1 (campo uid) como con documento nombrado por UID
+    function isAdmin() {
+      return isSignedIn();
+    }
+
+    // Colección Usuarios (Usuario_1, Usuario_2...)
+    // Campos: Nombre, Correo, Activo (bool), rol ("Administrador" | "Empleado"), uid
+    match /Usuarios/{usuarioId} {
+      allow read: if true;
+      allow create, update, delete: if isSignedIn()
+        && request.resource.data.rol in ["Administrador", "Empleado"]
+        && request.resource.data.Activo is bool;
+    }
+
+    // Colección Productos (Prod_1 .. Prod_10+)
+    // Campos: Nombre, Categoria, Descripcion, Precio (>= 0), Stock (>= 0), Disponible (bool)
+    match /Productos/{productoId} {
+      allow read: if true;
+      allow create, update: if request.resource.data.Precio is number
+        && request.resource.data.Precio >= 0
+        && request.resource.data.Stock is number
+        && request.resource.data.Stock >= 0;
+      allow delete: if isAdmin();
+    }
+
+    // Colección Clientes (Cliente_1 .. Cliente_5+)
+    // Campos: Nombre, Correo, Telefono, Fecha
+    match /Clientes/{clienteId} {
+      allow read, create, update, delete: if true;
+    }
+
+    // Colección Pedidos (Pedido_1 .. Pedido_10+)
+    // Campos: ClienteId, Estado, Fecha, Productos (list), Subtotal, Total (>= 0)
+    match /Pedidos/{pedidoId} {
+      allow read: if true;
+      allow create: if request.resource.data.Productos is list
+        && request.resource.data.Productos.size() > 0
+        && request.resource.data.Total is number
+        && request.resource.data.Total >= 0
+        && request.resource.data.Estado in [
+          "Pendiente",
+          "En preparación",
+          "Listo",
+          "Entregado",
+          "Cancelado"
+        ];
+      allow update: if request.resource.data.Estado in [
+        "Pendiente",
+        "En preparación",
+        "Listo",
+        "Entregado",
+        "Cancelado"
+      ];
+      allow delete: if true;
+    }
+  }
+}

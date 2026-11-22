@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoffeeTech - Productos (Fase 4 CRUD)</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <header id="coffeetech-navbar"></header>
+
+  <main class="page-container">
+    <div class="page-header">
+      <div>
+        <span class="phase-tag">Fase 4. Aplicación Web - CRUD con Validación</span>
+        <h1>🥐 Gestión de Productos</h1>
+        <p>Colección <code>Productos</code> en Firestore (<code>Nombre</code>, <code>Categoria</code>, <code>Descripcion</code>, <code>Precio</code>, <code>Stock</code>, <code>Disponible</code>).</p>
+      </div>
+    </div>
+
+    <div id="role-notice-productos" class="alert alert-warning hidden">
+      <strong>Modo de solo lectura para rol actual:</strong> Según las políticas de seguridad (Fase 6), solo el rol <strong>Administrador</strong> puede crear, editar o eliminar productos del catálogo. Puedes cambiar el rol en la barra superior para probar ambos comportamientos.
+    </div>
+
+    <!-- Formulario CRUD Productos -->
+    <section id="card-form-producto" class="card">
+      <div class="card-header">
+        <h3 id="prod-form-title">Registrar nuevo producto</h3>
+        <span id="prod-next-id-hint" class="id-pill">ID automático: Prod_...</span>
+      </div>
+
+      <div id="prod-validation-msg" class="alert alert-error hidden"></div>
+
+      <form id="form-producto" class="form-grid" novalidate>
+        <input type="hidden" id="prod-id">
+
+        <div class="form-group">
+          <label for="prod-nombre">Nombre del producto *</label>
+          <input type="text" id="prod-nombre" placeholder="Ej. Cafe, Mollete, Termo" required>
+        </div>
+
+        <div class="form-group">
+          <label for="prod-categoria">Categoría *</label>
+          <select id="prod-categoria" required>
+            <option value="Bebida">Bebida</option>
+            <option value="Comida">Comida</option>
+            <option value="Minorista">Minorista</option>
+            <option value="Postre">Postre</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="prod-precio">Precio ($ MXN) *</label>
+          <input type="number" id="prod-precio" min="1" step="0.5" placeholder="Ej. 90" required>
+        </div>
+
+        <div class="form-group">
+          <label for="prod-stock">Stock disponible *</label>
+          <input type="number" id="prod-stock" min="0" step="1" placeholder="Ej. 25" required>
+        </div>
+
+        <div class="form-group">
+          <label for="prod-disponible">Disponible para venta</label>
+          <select id="prod-disponible">
+            <option value="true">Sí (Disponible)</option>
+            <option value="false">No (Inactivo)</option>
+          </select>
+        </div>
+
+        <div class="form-group" style="grid-column: 1 / -1;">
+          <label for="prod-descripcion">Descripción *</label>
+          <input type="text" id="prod-descripcion" placeholder="Ej. Cafe caliente sabor chocolate y cargado" required>
+        </div>
+
+        <div style="display:flex;gap:0.6rem;grid-column: 1 / -1;">
+          <button type="submit" id="btn-prod-guardar" class="btn btn-primary">Guardar producto</button>
+          <button type="button" id="btn-prod-cancelar" class="btn btn-secondary hidden">Cancelar edición</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Tabla y filtros del catálogo -->
+    <section class="card">
+      <div class="card-header">
+        <h3>Catálogo actual en Firestore (<span id="count-productos">0</span>)</h3>
+        <div class="toolbar" style="margin-bottom:0;">
+          <input type="text" id="filtro-prod-texto" placeholder="Buscar por ID, nombre o descripción...">
+          <select id="filtro-prod-categoria">
+            <option value="">Todas las categorías</option>
+            <option value="Bebida">Bebida</option>
+            <option value="Comida">Comida</option>
+            <option value="Minorista">Minorista</option>
+            <option value="Postre">Postre</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre y Descripción</th>
+              <th>Categoría</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Disponible</th>
+              <th>Acciones CRUD</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-productos-body">
+            <tr><td colspan="7" class="empty-state">Cargando productos desde Firestore...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/productos.js"></script>
+</body>
+</html>

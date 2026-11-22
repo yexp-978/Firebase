@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CoffeeTech - Gestión de Pedidos (Fase 5)</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <header id="coffeetech-navbar"></header>
+
+  <main class="page-container">
+    <div class="page-header">
+      <div>
+        <span class="phase-tag">Fase 5. Gestión de Pedidos</span>
+        <h1>🛒 Carrito, Registro y Actualización de Estados</h1>
+        <p>Implementación de carrito de compras, cálculo de subtotal/total, registro transaccional con descuento de stock en <code>Productos</code> y actualización de estados en <code>Pedidos</code>.</p>
+      </div>
+      <div>
+        <button type="button" id="btn-seed" class="btn btn-secondary btn-sm">
+          ⚡ Generar hasta 10 pedidos de prueba
+        </button>
+      </div>
+    </div>
+
+    <div id="role-notice-pedidos" class="alert alert-warning hidden">
+      <strong>Acceso restringido (Rol Invitado):</strong> Se requiere rol <strong>Empleado</strong> o <strong>Administrador</strong> para registrar pedidos o cambiar estados.
+    </div>
+
+    <div class="two-col-grid">
+      <!-- 1. Selección de Cliente y Productos -->
+      <section class="card">
+        <div class="card-header">
+          <h3>1. Armar Pedido</h3>
+          <span id="pedido-next-id" class="id-pill">Siguiente: Pedido_...</span>
+        </div>
+
+        <div class="form-group">
+          <label for="select-cliente">Seleccionar Cliente *</label>
+          <select id="select-cliente">
+            <option value="">Cargando clientes...</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="select-producto">Seleccionar Producto disponible *</label>
+          <select id="select-producto">
+            <option value="">Cargando productos...</option>
+          </select>
+        </div>
+
+        <div class="form-grid" style="grid-template-columns: 120px 1fr;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label for="input-cantidad">Cantidad</label>
+            <input type="number" id="input-cantidad" value="1" min="1">
+          </div>
+          <button type="button" id="btn-agregar" class="btn btn-primary">
+            + Agregar al carrito
+          </button>
+        </div>
+      </section>
+
+      <!-- 2. Carrito y Confirmación -->
+      <section class="card">
+        <div class="card-header">
+          <h3>2. Carrito de Compras</h3>
+          <button type="button" id="btn-vaciar" class="btn btn-secondary btn-sm">Vaciar carrito</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Precio Unit.</th>
+                <th>Cantidad</th>
+                <th>Importe</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-carrito">
+              <tr><td colspan="5" class="empty-state">El carrito está vacío.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-top:1rem;padding-top:0.85rem;border-top:1px dashed var(--border);">
+          <div>
+            <p style="font-size:0.92rem;color:var(--text-muted);">
+              <strong>Subtotal:</strong> $<span id="txt-subtotal">0</span> MXN
+            </p>
+            <p style="font-size:1.25rem;color:var(--bg-sidebar);">
+              <strong>Total a pagar:</strong> $<span id="txt-total">0</span> MXN
+            </p>
+          </div>
+
+          <button type="button" id="btn-confirmar" class="btn btn-primary">
+            ✅ Confirmar y Registrar Pedido
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- 3. Listado de Pedidos y Actualización de Estados -->
+    <section class="card">
+      <div class="card-header">
+        <h3>3. Pedidos Registrados y Actualización de Estados (<span id="count-pedidos">0</span>)</h3>
+        <div class="toolbar" style="margin-bottom:0;">
+          <select id="filtro-estado-pedidos">
+            <option value="">Todos los estados</option>
+            <option value="Pendiente">Pendiente</option>
+            <option value="En preparación">En preparación</option>
+            <option value="Listo">Listo</option>
+            <option value="Entregado">Entregado</option>
+            <option value="Cancelado">Cancelado</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID Pedido</th>
+              <th>Cliente</th>
+              <th>Productos (Cantidad x Precio = Importe)</th>
+              <th>Fecha</th>
+              <th>Subtotal / Total</th>
+              <th>Estado Actual</th>
+              <th>Actualizar Estado</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-pedidos-registrados">
+            <tr><td colspan="7" class="empty-state">Cargando pedidos desde Firestore...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./js/pedidos.js"></script>
+</body>
+</html>
