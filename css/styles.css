@@ -1,5 +1,5 @@
 :root {
-  --bg-page: #faf6f0;
+  --bg-page: #7a4d09bb;
   --bg-surface: #ffffff;
   --bg-sidebar: #2c1810;
   --bg-sidebar-hover: #3e2419;
@@ -38,6 +38,55 @@ body {
 
 .hidden {
   display: none !important;
+}
+
+/* ==================== LOGIN PAGE ==================== */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: radial-gradient(circle at top right, #ede0d4 0%, #faf6f0 55%, #f3e9dc 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 430px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 2.25rem;
+  box-shadow: var(--shadow-md);
+}
+
+.brand-header {
+  text-align: center;
+  margin-bottom: 1.75rem;
+}
+
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 16px;
+  background: var(--bg-sidebar);
+  color: #fff;
+  font-size: 1.85rem;
+  margin-bottom: 0.75rem;
+}
+
+.brand-header h1 {
+  font-size: 1.65rem;
+  color: var(--bg-sidebar);
+}
+
+.brand-header p {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin-top: 0.25rem;
 }
 
 /* ==================== TOP NAVBAR ==================== */

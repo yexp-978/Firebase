@@ -79,6 +79,7 @@ function startServer(port) {
     console.log("====================================================");
     console.log("  ☕ CoffeeTech - Servidor de Desarrollo Activo");
     console.log("====================================================");
+    console.log(`  Login (Sesión):   http://localhost:${port}/login.html`);
     console.log(`  Inicio / Panel:   http://localhost:${port}/index.html`);
     console.log(`  Productos (CRUD): http://localhost:${port}/productos.html`);
     console.log(`  Clientes (CRUD):  http://localhost:${port}/clientes.html`);

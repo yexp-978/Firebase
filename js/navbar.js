@@ -2,7 +2,7 @@ import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-auth.js";
 import { collection, getDocs } from "https://www.gstatic.com/firebasejs/13.4.0/firebase-firestore.js";
 import { appState, getActiveRole, setActiveRole, subscribeState } from "./state.js";
-import { escapeHtml, normalizarUsuario, showToast } from "./utils.js";
+import { escapeHtml, normalizarUsuario } from "./utils.js";
 
 const NAV_LINKS = [
   { href: "index.html", label: "🏠 Inicio", id: "index" },
@@ -57,41 +57,34 @@ export function initNavbar(activePageId = "") {
             <span class="ct-user-name">${escapeHtml(nombreUsuario)}</span>
             <small class="ct-user-email">${escapeHtml(correoUsuario)}</small>
           </div>
-          <div class="ct-role-switcher" title="Cambiar rol activo para pruebas de acceso (Fase 6)">
-            <label for="global-role-select">Rol:</label>
-            <select id="global-role-select">
-              <option value="Administrador" ${rolActual === "Administrador" ? "selected" : ""}>Administrador</option>
-              <option value="Empleado" ${rolActual === "Empleado" ? "selected" : ""}>Empleado</option>
-              <option value="Invitado" ${rolActual === "Invitado" ? "selected" : ""}>Invitado (Sin permiso)</option>
-            </select>
-          </div>
+          <span class="badge ${rolActual === "Administrador" ? "badge-activo" : "badge-preparacion"}">
+            ${escapeHtml(rolActual)}
+          </span>
+          <a href="./login.html" id="btn-ir-login" class="btn btn-secondary btn-sm">
+            ${appState.user ? "Cambiar cuenta" : "Iniciar sesión"}
+          </a>
           ${
             appState.user
-              ? `<button type="button" id="btn-global-logout" class="btn btn-secondary btn-sm">Salir Auth</button>`
+              ? `<button type="button" id="btn-global-logout" class="btn btn-danger btn-sm">Cerrar sesión</button>`
               : ""
           }
         </div>
       </div>
     `;
 
-    document.getElementById("global-role-select")?.addEventListener("change", (e) => {
-      const nuevoRol = e.target.value;
-      setActiveRole(nuevoRol);
-      showToast(`Rol activo cambiado a: ${nuevoRol}`);
-    });
-
     document.getElementById("btn-global-logout")?.addEventListener("click", async () => {
       await signOut(auth);
+      localStorage.removeItem("coffeetech_active_user");
+      localStorage.removeItem("coffeetech_active_role");
       appState.user = null;
-      renderNav();
-      showToast("Sesión de Firebase Auth cerrada.");
+      window.location.href = "./login.html";
     });
   }
 
   renderNav();
   subscribeState("perfil", renderNav);
 
-  // Sincronizar con usuario autenticado en Firebase Auth o con Usuario_1 en Firestore
+  // Sincronizar automáticamente con el usuario que inició sesión en Firebase Auth (Administrador o Empleado)
   onAuthStateChanged(auth, async (user) => {
     appState.user = user;
     try {
