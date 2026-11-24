@@ -228,7 +228,7 @@ export function renderClientesTabla() {
                   <button type="button" class="btn btn-secondary btn-sm btn-edit-cli" data-id="${c.id}">Editar</button>
                   <button type="button" class="btn btn-danger btn-sm btn-del-cli" data-id="${c.id}">Eliminar</button>
                 `
-                : `<span style="color:var(--text-muted);font-size:0.82rem;">🔒 Sin permiso</span>`
+                : `<span style="color:var(--text-muted);font-size:0.82rem;">Sin permiso</span>`
             }
           </td>
         </tr>

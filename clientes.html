@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoffeeTech - Clientes (Fase 4 CRUD)</title>
+  <title>CoffeeTech - Clientes</title>
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
@@ -12,21 +12,19 @@
   <main class="page-container">
     <div class="page-header">
       <div>
-        <span class="phase-tag">Fase 4. Aplicación Web - CRUD con Validación</span>
-        <h1>👥 Gestión de Clientes</h1>
-        <p>Colección <code>Clientes</code> en Firestore (<code>Nombre</code>, <code>Correo</code>, <code>Telefono</code>, <code>Fecha</code>).</p>
+        <h1>Clientes</h1>
+        <p>Registra clientes nuevos o edita sus datos de contacto.</p>
       </div>
     </div>
 
     <div id="role-notice-clientes" class="alert alert-warning hidden">
-      <strong>Acceso restringido (Rol Invitado):</strong> Se requiere rol <strong>Empleado</strong> o <strong>Administrador</strong> para registrar o modificar clientes.
+      Necesitas iniciar sesión como Empleado o Administrador para modificar clientes.
     </div>
 
-    <!-- Formulario CRUD Clientes -->
     <section class="card">
       <div class="card-header">
-        <h3 id="cli-form-title">Registrar nuevo cliente</h3>
-        <span id="cli-next-id-hint" class="id-pill">ID automático: Cliente_...</span>
+        <h3 id="cli-form-title">Agregar cliente</h3>
+        <span id="cli-next-id-hint" class="id-pill">ID: Cliente_...</span>
       </div>
 
       <div id="cli-validation-msg" class="alert alert-error hidden"></div>
@@ -35,32 +33,31 @@
         <input type="hidden" id="cli-id">
 
         <div class="form-group">
-          <label for="cli-nombre">Nombre del cliente *</label>
-          <input type="text" id="cli-nombre" placeholder="Ej. Maria, Antonio, Pepe" required>
+          <label for="cli-nombre">Nombre</label>
+          <input type="text" id="cli-nombre" placeholder="Ej. Maria" required>
         </div>
 
         <div class="form-group">
-          <label for="cli-telefono">Teléfono (10 dígitos) *</label>
+          <label for="cli-telefono">Teléfono (10 dígitos)</label>
           <input type="tel" id="cli-telefono" placeholder="Ej. 6142039418" required>
         </div>
 
         <div class="form-group">
-          <label for="cli-correo">Correo electrónico *</label>
-          <input type="email" id="cli-correo" placeholder="Ej. maria.felix@gmail.com" required>
+          <label for="cli-correo">Correo</label>
+          <input type="email" id="cli-correo" placeholder="Ej. maria@gmail.com" required>
         </div>
 
-        <div style="display:flex;gap:0.6rem;">
+        <div style="display:flex;gap:0.5rem;">
           <button type="submit" id="btn-cli-guardar" class="btn btn-primary">Guardar cliente</button>
           <button type="button" id="btn-cli-cancelar" class="btn btn-secondary hidden">Cancelar</button>
         </div>
       </form>
     </section>
 
-    <!-- Tabla de Clientes -->
     <section class="card">
       <div class="card-header">
-        <h3>Directorio de clientes en Firestore (<span id="count-clientes">0</span>)</h3>
-        <input type="text" id="filtro-cli-texto" placeholder="Buscar por ID, nombre, teléfono o correo..." style="width:auto;min-width:260px;">
+        <h3>Clientes registrados (<span id="count-clientes">0</span>)</h3>
+        <input type="text" id="filtro-cli-texto" placeholder="Buscar cliente..." style="width:auto;min-width:240px;">
       </div>
 
       <div class="table-wrap">
@@ -71,13 +68,13 @@
               <th>Nombre</th>
               <th>Teléfono</th>
               <th>Correo</th>
-              <th>Fecha de Registro</th>
+              <th>Fecha de registro</th>
               <th>Pedidos</th>
-              <th>Acciones CRUD</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody id="tabla-clientes-body">
-            <tr><td colspan="7" class="empty-state">Cargando clientes desde Firestore...</td></tr>
+            <tr><td colspan="7" class="empty-state">Cargando clientes...</td></tr>
           </tbody>
         </table>
       </div>

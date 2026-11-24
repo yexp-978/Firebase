@@ -212,7 +212,7 @@ export function renderProductosTabla() {
         </td>
         <td>
           <span class="badge ${p.Disponible ? "badge-activo" : "badge-inactivo"}">
-            ${p.Disponible ? "true (Activo)" : "false (Inactivo)"}
+            ${p.Disponible ? "Sí" : "No"}
           </span>
         </td>
         <td class="actions-cell">
@@ -225,7 +225,7 @@ export function renderProductosTabla() {
                 </button>
                 <button type="button" class="btn btn-danger btn-sm btn-del-prod" data-id="${p.id}">Eliminar</button>
               `
-              : `<span style="color:var(--text-muted);font-size:0.82rem;">🔒 Requiere rol Administrador</span>`
+              : `<span style="color:var(--text-muted);font-size:0.82rem;">Solo Administrador</span>`
           }
         </td>
       </tr>

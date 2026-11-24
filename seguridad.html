@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoffeeTech - Seguridad, Roles y Pruebas (Fases 6 y 7)</title>
+  <title>CoffeeTech - Usuarios y Pruebas</title>
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
@@ -12,62 +12,59 @@
   <main class="page-container">
     <div class="page-header">
       <div>
-        <span class="phase-tag">Fase 6 y Fase 7. Seguridad, Roles, Pruebas y Documentación</span>
-        <h1>🔐 Usuarios, Roles, Reglas de Seguridad y Pruebas</h1>
-        <p>Gestión de la colección <code>Usuarios</code>, autenticación con Firebase Auth, pruebas de control de acceso por rol y ejecución automatizada de pruebas funcionales.</p>
+        <h1>Usuarios y Pruebas</h1>
+        <p>Administra las cuentas de usuario, revisa los permisos por rol y ejecuta las pruebas del sistema.</p>
       </div>
       <div>
         <button type="button" id="btn-run-all-tests" class="btn btn-primary">
-          🧪 Ejecutar Suite de Pruebas (Fase 7)
+          Ejecutar pruebas
         </button>
       </div>
     </div>
 
     <div class="two-col-grid">
-      <!-- 1. Autenticación Firebase Auth y Perfil Activo -->
       <section class="card">
         <div class="card-header">
-          <h3>1. Sesión Firebase Auth y Rol Activo</h3>
-          <span id="auth-status-badge" class="badge badge-activo">Rol Activo</span>
+          <h3>Sesión actual</h3>
+          <span id="auth-status-badge" class="badge badge-activo">Rol</span>
         </div>
 
         <div id="active-profile-card" class="alert alert-info">
-          Cargando perfil activo...
+          Cargando usuario...
         </div>
 
         <form id="form-login-firebase" novalidate>
           <div class="form-group">
-            <label for="login-email">Correo Firebase Auth (ej. oswald.reyes.alcala@gmail.com)</label>
+            <label for="login-email">Correo</label>
             <input type="email" id="login-email" value="oswald.reyes.alcala@gmail.com" required>
           </div>
           <div class="form-group">
             <label for="login-password">Contraseña</label>
-            <input type="password" id="login-password" placeholder="Ingresa tu contraseña de Firebase Auth" required>
+            <input type="password" id="login-password" placeholder="Ingresa tu contraseña" required>
           </div>
           <button type="submit" id="btn-login-submit" class="btn btn-primary btn-block">
-            Iniciar sesión con Firebase Authentication
+            Iniciar sesión
           </button>
         </form>
         <div id="login-feedback" class="alert hidden" style="margin-top:0.85rem;margin-bottom:0;"></div>
       </section>
 
-      <!-- 2. Pruebas de Acceso por Rol (Evidencia Fase 6) -->
       <section class="card">
         <div class="card-header">
-          <h3>2. Matriz y Simulador de Pruebas de Acceso por Rol</h3>
+          <h3>Permisos por rol</h3>
         </div>
         <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:0.85rem;">
-          Selecciona un rol para verificar los permisos de acceso sobre cada módulo del sistema:
+          Haz clic en un rol para ver qué acciones tiene permitidas en el sistema:
         </p>
         <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
           <button type="button" class="btn btn-secondary btn-sm btn-test-role" data-role="Administrador">
-            Probar Rol: Administrador
+            Administrador
           </button>
           <button type="button" class="btn btn-secondary btn-sm btn-test-role" data-role="Empleado">
-            Probar Rol: Empleado
+            Empleado
           </button>
           <button type="button" class="btn btn-secondary btn-sm btn-test-role" data-role="Invitado">
-            Probar Rol: Invitado (No autenticado)
+            Invitado
           </button>
         </div>
 
@@ -75,9 +72,9 @@
           <table>
             <thead>
               <tr>
-                <th>Operación / Módulo</th>
-                <th>Rol Actual</th>
-                <th>Resultado de Acceso</th>
+                <th>Acción</th>
+                <th>Rol</th>
+                <th>Acceso</th>
               </tr>
             </thead>
             <tbody id="tabla-pruebas-acceso"></tbody>
@@ -86,35 +83,34 @@
       </section>
     </div>
 
-    <!-- 3. Gestión de Colección Usuarios en Firestore -->
     <section class="card">
       <div class="card-header">
-        <h3>3. Colección <code>Usuarios</code> en Firestore (<span id="count-usuarios">0</span>)</h3>
+        <h3>Usuarios registrados (<span id="count-usuarios">0</span>)</h3>
         <span id="usu-next-id-hint" class="id-pill">Siguiente ID: Usuario_...</span>
       </div>
 
-      <form id="form-usuario" class="form-grid" style="margin-bottom:1.25rem;" novalidate>
+      <form id="form-usuario" class="form-grid" style="margin-bottom:1.15rem;" novalidate>
         <div class="form-group">
-          <label for="usu-nombre">Nombre *</label>
+          <label for="usu-nombre">Nombre</label>
           <input type="text" id="usu-nombre" placeholder="Ej. Oswaldo" required>
         </div>
         <div class="form-group">
-          <label for="usu-correo">Correo *</label>
-          <input type="email" id="usu-correo" placeholder="usuario@gmail.com" required>
+          <label for="usu-correo">Correo</label>
+          <input type="email" id="usu-correo" placeholder="correo@gmail.com" required>
         </div>
         <div class="form-group">
-          <label for="usu-rol">Rol (<code>rol</code>) *</label>
+          <label for="usu-rol">Rol</label>
           <select id="usu-rol" required>
             <option value="Administrador">Administrador</option>
             <option value="Empleado">Empleado</option>
           </select>
         </div>
         <div class="form-group">
-          <label for="usu-uid">UID (opcional / Auth)</label>
-          <input type="text" id="usu-uid" placeholder="Autogenerado si se deja vacío">
+          <label for="usu-uid">UID (opcional)</label>
+          <input type="text" id="usu-uid" placeholder="Se genera si lo dejas vacío">
         </div>
         <div>
-          <button type="submit" id="btn-usu-guardar" class="btn btn-primary">Registrar en Usuarios</button>
+          <button type="submit" id="btn-usu-guardar" class="btn btn-primary">Guardar usuario</button>
         </div>
       </form>
 
@@ -122,56 +118,51 @@
         <table>
           <thead>
             <tr>
-              <th>ID Documento</th>
+              <th>ID</th>
               <th>Nombre</th>
               <th>Correo</th>
               <th>UID</th>
-              <th>Rol (<code>rol</code>)</th>
+              <th>Rol</th>
               <th>Activo</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody id="tabla-usuarios-body">
-            <tr><td colspan="7" class="empty-state">Cargando colección Usuarios...</td></tr>
+            <tr><td colspan="7" class="empty-state">Cargando usuarios...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- 4. Fase 7: Ejecución y Documentación de Pruebas Funcionales -->
     <section class="card">
       <div class="card-header">
-        <div>
-          <span class="phase-tag">Fase 7. Pruebas y Documentación</span>
-          <h3>4. Reporte de Pruebas Funcionales en Vivo</h3>
-        </div>
-        <span id="tests-summary-badge" class="badge badge-activo">Listo para ejecutar</span>
+        <h3>Pruebas del sistema</h3>
+        <span id="tests-summary-badge" class="badge badge-activo">Listo</span>
       </div>
 
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th># Caso</th>
-              <th>Fase / Módulo</th>
-              <th>Descripción de la Prueba</th>
-              <th>Evidencia Verificada en Firestore</th>
+              <th>Caso</th>
+              <th>Sección</th>
+              <th>Qué se revisa</th>
+              <th>Resultado en la base de datos</th>
               <th>Estado</th>
             </tr>
           </thead>
           <tbody id="tabla-suite-pruebas">
-            <tr><td colspan="5" class="empty-state">Ejecutando verificación automática...</td></tr>
+            <tr><td colspan="5" class="empty-state">Revisando datos...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- 5. Reglas de Seguridad de Cloud Firestore -->
     <section class="card">
       <div class="card-header">
-        <h3>5. Reglas de Seguridad Configuradas (<code>firestore.rules</code>)</h3>
+        <h3>Reglas de seguridad (firestore.rules)</h3>
       </div>
-      <pre id="rules-code-view" class="code-block">Cargando firestore.rules...</pre>
+      <pre id="rules-code-view" class="code-block">Cargando archivo...</pre>
     </section>
   </main>
 

@@ -5,12 +5,12 @@ import { appState, getActiveRole, setActiveRole, subscribeState } from "./state.
 import { escapeHtml, normalizarUsuario } from "./utils.js";
 
 const NAV_LINKS = [
-  { href: "index.html", label: "🏠 Inicio", id: "index" },
-  { href: "productos.html", label: "🥐 Productos (Fase 4)", id: "productos" },
-  { href: "clientes.html", label: "👥 Clientes (Fase 4)", id: "clientes" },
-  { href: "pedidos.html", label: "🛒 Pedidos y Carrito (Fase 5)", id: "pedidos" },
-  { href: "consultas.html", label: "🔎 Consultas y Filtros (Fase 6)", id: "consultas" },
-  { href: "seguridad.html", label: "🔐 Seguridad y Pruebas (F. 6 y 7)", id: "seguridad" }
+  { href: "index.html", label: "Inicio", id: "index" },
+  { href: "productos.html", label: "Productos", id: "productos" },
+  { href: "clientes.html", label: "Clientes", id: "clientes" },
+  { href: "pedidos.html", label: "Pedidos", id: "pedidos" },
+  { href: "consultas.html", label: "Consultas", id: "consultas" },
+  { href: "seguridad.html", label: "Usuarios y Pruebas", id: "seguridad" }
 ];
 
 export function initNavbar(activePageId = "") {
@@ -40,11 +40,7 @@ export function initNavbar(activePageId = "") {
       <div class="ct-topbar">
         <div class="ct-brand">
           <a href="./index.html" class="ct-brand-link">
-            <span class="ct-logo">☕</span>
-            <div>
-              <strong>CoffeeTech</strong>
-              <small>Firebase Cloud Firestore</small>
-            </div>
+            <strong>CoffeeTech</strong>
           </a>
         </div>
 
@@ -65,7 +61,7 @@ export function initNavbar(activePageId = "") {
           </a>
           ${
             appState.user
-              ? `<button type="button" id="btn-global-logout" class="btn btn-danger btn-sm">Cerrar sesión</button>`
+              ? `<button type="button" id="btn-global-logout" class="btn btn-danger btn-sm">Salir</button>`
               : ""
           }
         </div>
@@ -84,7 +80,6 @@ export function initNavbar(activePageId = "") {
   renderNav();
   subscribeState("perfil", renderNav);
 
-  // Sincronizar automáticamente con el usuario que inició sesión en Firebase Auth (Administrador o Empleado)
   onAuthStateChanged(auth, async (user) => {
     appState.user = user;
     try {

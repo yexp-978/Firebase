@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoffeeTech - Sistema Web Firebase</title>
+  <title>CoffeeTech - Inicio</title>
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
@@ -12,95 +12,86 @@
   <main class="page-container">
     <div class="page-header">
       <div>
-        <span class="phase-tag">Proyecto Integrador Firebase Cloud Firestore</span>
-        <h1>Panel General CoffeeTech</h1>
-        <p>Gestión de cafetería conectada en tiempo real a las colecciones <strong>Productos</strong>, <strong>Clientes</strong>, <strong>Pedidos</strong> y <strong>Usuarios</strong>.</p>
+        <h1>Inicio</h1>
+        <p>Resumen general del sistema y acceso a las secciones.</p>
       </div>
-      <div style="display:flex;gap:0.6rem;flex-wrap:wrap;">
-        <a href="./pedidos.html" class="btn btn-primary">🛒 Nuevo Pedido</a>
-        <a href="./consultas.html" class="btn btn-secondary">🔎 Consultas y Filtros</a>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <a href="./pedidos.html" class="btn btn-primary">Nuevo pedido</a>
+        <a href="./consultas.html" class="btn btn-secondary">Ver consultas</a>
       </div>
     </div>
 
-    <!-- KPIs en tiempo real desde Firestore -->
     <section class="panel-grid">
       <div class="kpi-card">
-        <span>Productos en Catálogo</span>
+        <span>Productos</span>
         <strong id="home-kpi-productos">...</strong>
       </div>
       <div class="kpi-card">
-        <span>Clientes Registrados</span>
+        <span>Clientes</span>
         <strong id="home-kpi-clientes">...</strong>
       </div>
       <div class="kpi-card">
-        <span>Pedidos Registrados</span>
+        <span>Pedidos</span>
         <strong id="home-kpi-pedidos">...</strong>
       </div>
       <div class="kpi-card">
-        <span>Ventas Acumuladas</span>
+        <span>Ventas totales</span>
         <strong id="home-kpi-ventas">$0.00 MXN</strong>
       </div>
     </section>
 
-    <!-- Tarjetas de las Fases del Proyecto -->
     <section class="module-cards-grid">
       <article class="module-card">
         <div>
-          <span class="phase-tag">Fase 4. Aplicación Web</span>
-          <h3>🥐 Catálogo de Productos (CRUD)</h3>
-          <p>Interfaz con formulario validado para registrar, consultar, editar, activar/desactivar y eliminar productos (<code>Prod_1</code> a <code>Prod_10</code>+).</p>
+          <h3>Productos</h3>
+          <p>Agrega, edita o elimina los productos disponibles.</p>
         </div>
-        <a href="./productos.html" class="btn btn-primary btn-block">Abrir Gestión de Productos</a>
+        <a href="./productos.html" class="btn btn-primary btn-block">Ir a Productos</a>
       </article>
 
       <article class="module-card">
         <div>
-          <span class="phase-tag">Fase 4. Aplicación Web</span>
-          <h3>👥 Directorio de Clientes (CRUD)</h3>
-          <p>Registro, edición, validación de correo/teléfono, baja y consulta de historial de compras por cliente (<code>Cliente_1</code> a <code>Cliente_5</code>+).</p>
+          <h3>Clientes</h3>
+          <p>Registra clientes y revisa sus pedidos anteriores.</p>
         </div>
-        <a href="./clientes.html" class="btn btn-primary btn-block">Abrir Gestión de Clientes</a>
+        <a href="./clientes.html" class="btn btn-primary btn-block">Ir a Clientes</a>
       </article>
 
       <article class="module-card">
         <div>
-          <span class="phase-tag">Fase 5. Gestión de Pedidos</span>
-          <h3>🛒 Carrito, Pedidos y Estados</h3>
-          <p>Carrito de compras, cálculo automático de subtotal y total, descuento transaccional de stock y actualización de estados (<code>Pendiente</code> → <code>Entregado</code>).</p>
+          <h3>Pedidos</h3>
+          <p>Arma un pedido en el carrito y actualiza su estado.</p>
         </div>
-        <a href="./pedidos.html" class="btn btn-primary btn-block">Abrir Carrito y Pedidos</a>
+        <a href="./pedidos.html" class="btn btn-primary btn-block">Ir a Pedidos</a>
       </article>
 
       <article class="module-card">
         <div>
-          <span class="phase-tag">Fase 6. Consultas y Seguridad</span>
-          <h3>🔎 Consultas y Filtros</h3>
-          <p>Filtros combinados por <strong>Producto</strong>, <strong>Cliente</strong>, <strong>Fecha</strong> y <strong>Estado</strong> con métricas de ventas y productos más vendidos.</p>
+          <h3>Consultas</h3>
+          <p>Busca pedidos por producto, cliente, fecha o estado.</p>
         </div>
-        <a href="./consultas.html" class="btn btn-primary btn-block">Abrir Consultas y Filtros</a>
+        <a href="./consultas.html" class="btn btn-primary btn-block">Ir a Consultas</a>
       </article>
 
       <article class="module-card">
         <div>
-          <span class="phase-tag">Fase 6 y 7. Seguridad y Pruebas</span>
-          <h3>🔐 Roles, Reglas y Pruebas</h3>
-          <p>Gestión de colección <code>Usuarios</code>, login con Firebase Auth, simulador de permisos por rol (<code>Administrador</code> / <code>Empleado</code>) y matriz de pruebas.</p>
+          <h3>Usuarios y Pruebas</h3>
+          <p>Administra cuentas, roles de acceso y pruebas del sistema.</p>
         </div>
-        <a href="./seguridad.html" class="btn btn-primary btn-block">Abrir Seguridad y Pruebas</a>
+        <a href="./seguridad.html" class="btn btn-primary btn-block">Ir a Usuarios y Pruebas</a>
       </article>
     </section>
 
-    <!-- Tabla rápida de últimos pedidos en Firestore -->
     <section class="card">
       <div class="card-header">
-        <h3>Últimos pedidos en Cloud Firestore</h3>
-        <a href="./pedidos.html" class="btn btn-secondary btn-sm">Ver todos / Actualizar estados</a>
+        <h3>Pedidos recientes</h3>
+        <a href="./pedidos.html" class="btn btn-secondary btn-sm">Ver todos</a>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>ID Pedido</th>
+              <th>ID</th>
               <th>Cliente</th>
               <th>Productos</th>
               <th>Fecha</th>
@@ -109,7 +100,7 @@
             </tr>
           </thead>
           <tbody id="home-tabla-pedidos">
-            <tr><td colspan="6" class="empty-state">Cargando pedidos desde Firestore...</td></tr>
+            <tr><td colspan="6" class="empty-state">Cargando pedidos...</td></tr>
           </tbody>
         </table>
       </div>

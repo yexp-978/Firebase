@@ -13,7 +13,6 @@ import {
   appState,
   getActiveRole,
   isAdmin,
-  isEmpleadoOrAdmin,
   setActiveRole,
   subscribeState
 } from "./state.js";
@@ -69,10 +68,9 @@ function renderPerfilYMatrizAcceso() {
 
   if (activeProfileCard) {
     activeProfileCard.innerHTML = `
-      <strong>Usuario en sesión:</strong> ${escapeHtml(perfil.Nombre || "Oswaldo")} (<code>${escapeHtml(perfil.id || "Usuario_1")}</code>)<br>
+      <strong>Nombre:</strong> ${escapeHtml(perfil.Nombre || "Oswaldo")} (${escapeHtml(perfil.id || "Usuario_1")})<br>
       <strong>Correo:</strong> ${escapeHtml(perfil.Correo || "oswald.reyes.alcala@gmail.com")}<br>
-      <strong>UID:</strong> <code>${escapeHtml(perfil.uid || "zWauXxVoGmb8CTDAeqtKljVVcaA3")}</code><br>
-      <strong>Rol activo:</strong> <strong>${escapeHtml(rol)}</strong>
+      <strong>Rol actual:</strong> ${escapeHtml(rol)}
     `;
   }
 
@@ -80,34 +78,34 @@ function renderPerfilYMatrizAcceso() {
 
   const operaciones = [
     {
-      nombre: "Consultar Catálogo de Productos y Pedidos",
+      nombre: "Ver productos y pedidos",
       permitido: rol === "Administrador" || rol === "Empleado",
-      motivoOk: "Acceso permitido (Lectura autorizada)",
-      motivoDenegado: "Denegado: Requiere usuario autenticado activo"
+      motivoOk: "Permitido",
+      motivoDenegado: "Bloqueado (requiere iniciar sesión)"
     },
     {
-      nombre: "Crear / Editar / Eliminar Productos (Colección Productos)",
+      nombre: "Agregar, editar o eliminar productos",
       permitido: rol === "Administrador",
-      motivoOk: "Acceso permitido (Rol Administrador verificado)",
-      motivoDenegado: "Bloqueado: Solo el Administrador puede modificar Productos"
+      motivoOk: "Permitido",
+      motivoDenegado: "Bloqueado (solo Administrador)"
     },
     {
-      nombre: "Registrar y Editar Clientes (Colección Clientes)",
+      nombre: "Agregar y editar clientes",
       permitido: rol === "Administrador" || rol === "Empleado",
-      motivoOk: "Acceso permitido (Empleado / Administrador)",
-      motivoDenegado: "Bloqueado: Invitado no puede escribir en Clientes"
+      motivoOk: "Permitido",
+      motivoDenegado: "Bloqueado"
     },
     {
-      nombre: "Confirmar Pedido en Carrito y Actualizar Estados (Colección Pedidos)",
+      nombre: "Crear pedidos y cambiar su estado",
       permitido: rol === "Administrador" || rol === "Empleado",
-      motivoOk: "Acceso permitido (Transacción de stock y estados autorizada)",
-      motivoDenegado: "Bloqueado: Requiere rol Empleado o Administrador"
+      motivoOk: "Permitido",
+      motivoDenegado: "Bloqueado"
     },
     {
-      nombre: "Administrar Cuentas y Roles (Colección Usuarios)",
+      nombre: "Administrar usuarios y roles",
       permitido: rol === "Administrador",
-      motivoOk: "Acceso permitido (Exclusivo Administrador)",
-      motivoDenegado: "Bloqueado: Rol Empleado/Invitado no puede cambiar roles"
+      motivoOk: "Permitido",
+      motivoDenegado: "Bloqueado (solo Administrador)"
     }
   ];
 
@@ -115,11 +113,11 @@ function renderPerfilYMatrizAcceso() {
     .map(
       (op) => `
       <tr>
-        <td><strong>${escapeHtml(op.nombre)}</strong></td>
+        <td>${escapeHtml(op.nombre)}</td>
         <td><span class="id-pill">${escapeHtml(rol)}</span></td>
         <td>
           <span class="badge ${op.permitido ? "badge-activo" : "badge-cancelado"}">
-            ${op.permitido ? "✅ " + escapeHtml(op.motivoOk) : "⛔ " + escapeHtml(op.motivoDenegado)}
+            ${op.permitido ? escapeHtml(op.motivoOk) : escapeHtml(op.motivoDenegado)}
           </span>
         </td>
       </tr>
@@ -139,7 +137,7 @@ function renderTablaUsuarios() {
   }
 
   if (ordenados.length === 0) {
-    tbodyUsuarios.innerHTML = `<tr><td colspan="7" class="empty-state">No hay documentos en la colección Usuarios.</td></tr>`;
+    tbodyUsuarios.innerHTML = `<tr><td colspan="7" class="empty-state">No hay usuarios registrados.</td></tr>`;
     return;
   }
 
@@ -159,12 +157,12 @@ function renderTablaUsuarios() {
         </td>
         <td>
           <span class="badge ${u.Activo ? "badge-activo" : "badge-inactivo"}">
-            ${u.Activo ? "true (Activo)" : "false (Inactivo)"}
+            ${u.Activo ? "Sí" : "No"}
           </span>
         </td>
         <td class="actions-cell">
           <button type="button" class="btn btn-secondary btn-sm btn-usar-perfil" data-id="${u.id}">
-            Usar perfil
+            Usar cuenta
           </button>
           ${
             admin
@@ -172,7 +170,7 @@ function renderTablaUsuarios() {
                 <button type="button" class="btn btn-secondary btn-sm btn-toggle-usu" data-id="${u.id}">
                   ${u.Activo ? "Desactivar" : "Activar"}
                 </button>
-                <button type="button" class="btn btn-danger btn-sm btn-del-usu" data-id="${u.id}">✕</button>
+                <button type="button" class="btn btn-danger btn-sm btn-del-usu" data-id="${u.id}">Eliminar</button>
               `
               : ""
           }
@@ -190,7 +188,7 @@ function renderTablaUsuarios() {
       }
       try {
         await updateDoc(doc(db, "Usuarios", sel.dataset.id), { rol: sel.value });
-        showToast(`Rol de ${sel.dataset.id} actualizado a ${sel.value}.`);
+        showToast(`Rol actualizado a ${sel.value}.`);
       } catch (err) {
         showToast("Error al actualizar rol: " + err.message, "error");
       }
@@ -202,7 +200,7 @@ function renderTablaUsuarios() {
       const u = appState.usuarios.find((x) => x.id === btn.dataset.id);
       if (u) {
         setActiveRole(u.rol, u);
-        showToast(`Perfil activo cambiado a ${u.Nombre} (${u.rol}).`);
+        showToast(`Usando cuenta de ${u.Nombre} (${u.rol}).`);
       }
     });
   });
@@ -213,7 +211,7 @@ function renderTablaUsuarios() {
       if (!u) return;
       try {
         await updateDoc(doc(db, "Usuarios", u.id), { Activo: !u.Activo });
-        showToast(`Estado Activo de ${u.Nombre} actualizado.`);
+        showToast(`Estado de ${u.Nombre} actualizado.`);
       } catch (err) {
         showToast("Error al cambiar estado: " + err.message, "error");
       }
@@ -225,13 +223,13 @@ function renderTablaUsuarios() {
       const u = appState.usuarios.find((x) => x.id === btn.dataset.id);
       if (!u) return;
       if (u.id === "Usuario_1") {
-        showToast("No se debe eliminar al administrador principal (Usuario_1).", "error");
+        showToast("No se puede eliminar al administrador principal.", "error");
         return;
       }
-      if (!confirm(`¿Eliminar a ${u.Nombre} (${u.id})?`)) return;
+      if (!confirm(`¿Eliminar a ${u.Nombre}?`)) return;
       try {
         await deleteDoc(doc(db, "Usuarios", u.id));
-        showToast(`Usuario ${u.id} eliminado.`);
+        showToast(`Usuario eliminado.`);
       } catch (err) {
         showToast("Error al eliminar usuario: " + err.message, "error");
       }
@@ -239,7 +237,6 @@ function renderTablaUsuarios() {
   });
 }
 
-// Fase 7: Ejecución de pruebas documentadas en tiempo real
 export function ejecutarSuitePruebas() {
   if (!tablaSuitePruebas) return;
 
@@ -265,52 +262,52 @@ export function ejecutarSuitePruebas() {
 
   const casos = [
     {
-      id: "CP-01",
-      fase: "Fase 4 - CRUD Productos",
-      desc: "Lectura y validación de esquema en colección Productos (Nombre, Categoria, Precio >= 0, Stock >= 0, Disponible)",
-      evidencia: `${prods.length} productos cargados (${prods.map((p) => p.id).slice(0, 5).join(", ")}...). Precios y stocks válidos.`,
+      id: "Prueba 1",
+      fase: "Productos",
+      desc: "Que existan productos con precios y stock válidos",
+      evidencia: `${prods.length} productos registrados correctamente.`,
       ok: prods.length >= 1 && preciosValidos
     },
     {
-      id: "CP-02",
-      fase: "Fase 4 - CRUD Clientes",
-      desc: "Lectura y validación de esquema en colección Clientes (Nombre, Correo, Telefono, Fecha)",
-      evidencia: `${clis.length} clientes registrados (${clis.map((c) => `${c.id}: ${c.Nombre}`).join(", ")}).`,
+      id: "Prueba 2",
+      fase: "Clientes",
+      desc: "Que los clientes tengan nombre, teléfono y correo",
+      evidencia: `${clis.length} clientes registrados.`,
       ok: clis.length >= 1 && clientesValidos
     },
     {
-      id: "CP-03",
-      fase: "Fase 5 - Carrito y Cálculo Total",
-      desc: "Verificación de integridad matemática en Pedidos (Importe = Cantidad * Precio y Total = Suma de Importes)",
-      evidencia: `${peds.length} pedidos verificados. Suma total acumulada: ${formatCurrency(peds.reduce((a, b) => a + b.Total, 0))}.`,
+      id: "Prueba 3",
+      fase: "Carrito y Pedidos",
+      desc: "Que el total de cada pedido coincida con la suma de sus productos",
+      evidencia: `${peds.length} pedidos revisados. Total acumulado: ${formatCurrency(peds.reduce((a, b) => a + b.Total, 0))}.`,
       ok: pedidosIntegridad
     },
     {
-      id: "CP-04",
-      fase: "Fase 5 - Estados de Pedido",
-      desc: "Validación de estados permitidos (Pendiente, En preparación, Listo, Entregado, Cancelado)",
-      evidencia: `Todos los ${peds.length} pedidos tienen un estado válido en Firestore.`,
+      id: "Prueba 4",
+      fase: "Estados",
+      desc: "Que todos los pedidos tengan un estado válido",
+      evidencia: `Los ${peds.length} pedidos tienen estado válido.`,
       ok: estadosValidos
     },
     {
-      id: "CP-05",
-      fase: "Fase 6 - Consultas y Filtros",
-      desc: "Capacidad de filtrado cruzado por ProductoId, ClienteId, rango de Fecha y Estado",
-      evidencia: `Relaciones verificadas entre ${peds.length} pedidos, ${clis.length} clientes y ${prods.length} productos.`,
+      id: "Prueba 5",
+      fase: "Consultas",
+      desc: "Que se puedan filtrar pedidos por producto, cliente, fecha y estado",
+      evidencia: `Datos conectados entre ${peds.length} pedidos, ${clis.length} clientes y ${prods.length} productos.`,
       ok: peds.length > 0 && clis.length > 0 && prods.length > 0
     },
     {
-      id: "CP-06",
-      fase: "Fase 6 - Roles y Seguridad",
-      desc: "Verificación de colección Usuarios con rol Administrador activo y reglas de acceso por rol",
-      evidencia: `${usus.length} usuario(s) en Firestore. Admin principal: ${usus[0]?.Nombre || "Oswaldo"} (${usus[0]?.Correo || ""}).`,
+      id: "Prueba 6",
+      fase: "Usuarios y Roles",
+      desc: "Que existan cuentas activas con su rol asignado",
+      evidencia: `${usus.length} usuarios registrados (${usus.map((u) => `${u.Nombre}: ${u.rol}`).join(", ")}).`,
       ok: adminExiste
     }
   ];
 
   const aprobados = casos.filter((c) => c.ok).length;
   if (testsSummaryBadge) {
-    testsSummaryBadge.textContent = `${aprobados}/${casos.length} Pruebas Aprobadas`;
+    testsSummaryBadge.textContent = `${aprobados} de ${casos.length} correctas`;
     testsSummaryBadge.className = `badge ${aprobados === casos.length ? "badge-activo" : "badge-pendiente"}`;
   }
 
@@ -324,7 +321,7 @@ export function ejecutarSuitePruebas() {
         <td><small>${escapeHtml(c.evidencia)}</small></td>
         <td>
           <span class="badge ${c.ok ? "badge-activo" : "badge-pendiente"}">
-            ${c.ok ? "✅ APROBADO" : "⏳ PENDIENTE"}
+            ${c.ok ? "Correcto" : "Pendiente"}
           </span>
         </td>
       </tr>
@@ -341,7 +338,7 @@ async function cargarTextoReglas() {
       rulesCodeView.textContent = await res.text();
     }
   } catch {
-    rulesCodeView.textContent = "// Revisa el archivo firestore.rules en la raíz del proyecto.";
+    rulesCodeView.textContent = "// Archivo firestore.rules";
   }
 }
 
@@ -351,7 +348,7 @@ export function initSeguridad() {
       const role = btn.dataset.role;
       setActiveRole(role);
       renderPerfilYMatrizAcceso();
-      showToast(`Simulando permisos con rol: ${role}`);
+      showToast(`Probando rol: ${role}`);
     });
   });
 
@@ -376,14 +373,14 @@ export function initSeguridad() {
       }
       if (loginFeedback) {
         loginFeedback.className = "alert alert-success";
-        loginFeedback.textContent = `✅ Autenticación exitosa en Firebase Auth (UID: ${user.uid}). Perfil vinculado: ${encontrado?.Nombre || email} (${encontrado?.rol || "Administrador"}).`;
+        loginFeedback.textContent = `Sesión iniciada como ${encontrado?.Nombre || email} (${encontrado?.rol || "Administrador"}).`;
         loginFeedback.classList.remove("hidden");
       }
-      showToast("Sesión iniciada con Firebase Auth.");
+      showToast("Sesión iniciada.");
     } catch (err) {
       if (loginFeedback) {
         loginFeedback.className = "alert alert-error";
-        loginFeedback.textContent = `Error de Firebase Auth (${err.code}): ${err.message}`;
+        loginFeedback.textContent = `Correo o contraseña incorrectos.`;
         loginFeedback.classList.remove("hidden");
       }
     }
@@ -392,7 +389,7 @@ export function initSeguridad() {
   formUsuario?.addEventListener("submit", async (e) => {
     e.preventDefault();
     if (!isAdmin()) {
-      showToast("Acceso denegado: Solo el Administrador puede registrar usuarios.", "error");
+      showToast("Solo el Administrador puede registrar usuarios.", "error");
       return;
     }
 
@@ -402,7 +399,7 @@ export function initSeguridad() {
     const uid = (usuUid?.value || "").trim() || `uid_${Date.now()}`;
 
     if (!Nombre || !Correo) {
-      showToast("Completa el nombre y correo del usuario.", "error");
+      showToast("Completa el nombre y correo.", "error");
       return;
     }
 
@@ -416,7 +413,7 @@ export function initSeguridad() {
         uid
       });
       formUsuario.reset();
-      showToast(`Usuario ${nuevoId} ("${Nombre}") registrado en Firestore.`);
+      showToast(`Usuario ${Nombre} guardado.`);
     } catch (err) {
       showToast("Error al guardar usuario: " + err.message, "error");
     }
@@ -424,7 +421,7 @@ export function initSeguridad() {
 
   btnRunTests?.addEventListener("click", () => {
     ejecutarSuitePruebas();
-    showToast("Suite de pruebas ejecutada y verificada contra Firestore.");
+    showToast("Pruebas actualizadas.");
   });
 
   subscribeState("perfil", () => {

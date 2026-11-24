@@ -77,7 +77,7 @@ function startServer(port) {
 
   server.listen(port, () => {
     console.log("====================================================");
-    console.log("  ☕ CoffeeTech - Servidor de Desarrollo Activo");
+    console.log("  CoffeeTech - Servidor Local");
     console.log("====================================================");
     console.log(`  Login (Sesión):   http://localhost:${port}/login.html`);
     console.log(`  Inicio / Panel:   http://localhost:${port}/index.html`);

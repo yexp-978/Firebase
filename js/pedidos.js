@@ -362,7 +362,7 @@ function renderTablaPedidos() {
               <button type="button" class="btn btn-secondary btn-sm btn-ver-pedido" data-id="${p.id}">Ver</button>
               ${
                 admin
-                  ? `<button type="button" class="btn btn-danger btn-sm btn-del-pedido" data-id="${p.id}">✕</button>`
+                  ? `<button type="button" class="btn btn-danger btn-sm btn-del-pedido" data-id="${p.id}">Eliminar</button>`
                   : ""
               }
             </div>
@@ -462,7 +462,7 @@ export function initPedidos() {
       showToast("Error al procesar pedido: " + error.message, "error");
     } finally {
       btnConfirmar.disabled = false;
-      btnConfirmar.textContent = "✅ Confirmar y Registrar Pedido";
+      btnConfirmar.textContent = "Confirmar pedido";
     }
   });
 

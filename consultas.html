@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CoffeeTech - Consultas y Filtros (Fase 6)</title>
+  <title>CoffeeTech - Consultas</title>
   <link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
@@ -12,39 +12,37 @@
   <main class="page-container">
     <div class="page-header">
       <div>
-        <span class="phase-tag">Fase 6. Consultas y Seguridad</span>
-        <h1>🔎 Consultas y Filtros de Pedidos</h1>
-        <p>Filtra los pedidos de Cloud Firestore por <strong>Producto</strong>, <strong>Cliente</strong>, <strong>Fecha</strong> y <strong>Estado</strong>.</p>
+        <h1>Consultas</h1>
+        <p>Busca pedidos por producto, cliente, fecha o estado.</p>
       </div>
       <div>
-        <button type="button" id="btn-rep-limpiar" class="btn btn-secondary">🔄 Limpiar filtros</button>
+        <button type="button" id="btn-rep-limpiar" class="btn btn-secondary">Limpiar filtros</button>
       </div>
     </div>
 
-    <!-- Panel de Filtros (Producto, Cliente, Fecha, Estado) -->
     <section class="card">
       <div class="card-header">
-        <h3>Filtros de Consulta</h3>
-        <span id="rep-resumen-filtros" class="id-pill">Mostrando todos los registros</span>
+        <h3>Filtros</h3>
+        <span id="rep-resumen-filtros" class="id-pill">Todos los pedidos</span>
       </div>
 
       <div class="form-grid">
         <div class="form-group">
-          <label for="rep-producto">1. Filtrar por Producto</label>
+          <label for="rep-producto">Producto</label>
           <select id="rep-producto">
             <option value="">Todos los productos</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="rep-cliente">2. Filtrar por Cliente</label>
+          <label for="rep-cliente">Cliente</label>
           <select id="rep-cliente">
             <option value="">Todos los clientes</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="rep-estado">3. Filtrar por Estado</label>
+          <label for="rep-estado">Estado</label>
           <select id="rep-estado">
             <option value="">Todos los estados</option>
             <option value="Pendiente">Pendiente</option>
@@ -56,80 +54,77 @@
         </div>
 
         <div class="form-group">
-          <label for="rep-desde">4. Fecha Desde</label>
+          <label for="rep-desde">Desde</label>
           <input type="date" id="rep-desde">
         </div>
 
         <div class="form-group">
-          <label for="rep-hasta">5. Fecha Hasta</label>
+          <label for="rep-hasta">Hasta</label>
           <input type="date" id="rep-hasta">
         </div>
       </div>
     </section>
 
-    <!-- KPIs de la consulta -->
     <section class="panel-grid">
       <div class="kpi-card">
-        <span>Pedidos que coinciden</span>
+        <span>Pedidos encontrados</span>
         <strong id="kpi-pedidos">0</strong>
       </div>
       <div class="kpi-card">
-        <span>Ventas Totales (sin cancelados)</span>
+        <span>Ventas totales</span>
         <strong id="kpi-ventas">$0.00 MXN</strong>
       </div>
       <div class="kpi-card">
-        <span>Ticket Promedio</span>
+        <span>Promedio por pedido</span>
         <strong id="kpi-ticket">$0.00 MXN</strong>
       </div>
       <div class="kpi-card">
-        <span>Unidades Vendidas en Filtro</span>
+        <span>Productos vendidos</span>
         <strong id="kpi-unidades">0 uds</strong>
       </div>
     </section>
 
-    <!-- Tabla de resultados de pedidos filtrados -->
     <section class="card">
       <div class="card-header">
-        <h3>Resultados de la Consulta de Pedidos</h3>
+        <h3>Pedidos encontrados</h3>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>ID Pedido</th>
+              <th>ID</th>
               <th>Fecha</th>
               <th>Cliente</th>
-              <th>Productos Incluidos</th>
+              <th>Productos</th>
               <th>Subtotal</th>
               <th>Total</th>
               <th>Estado</th>
             </tr>
           </thead>
           <tbody id="tabla-reportes-pedidos">
-            <tr><td colspan="7" class="empty-state">Cargando consultas desde Firestore...</td></tr>
+            <tr><td colspan="7" class="empty-state">Cargando pedidos...</td></tr>
           </tbody>
         </table>
       </div>
     </section>
 
-    <!-- Ranking de productos vendidos dentro del filtro -->
     <section class="card">
       <div class="card-header">
-        <h3>Desglose por Producto en los Pedidos Filtrados</h3>
+        <h3>Ventas por producto</h3>
       </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>ID Producto</th>
-              <th>Nombre del Producto</th>
-              <th>Pedidos donde aparece</th>
-              <th>Unidades Vendidas</th>
-              <th>Ingresos Generados</th>
+              <th>ID</th>
+              <th>Producto</th>
+              <th>Pedidos</th>
+              <th>Unidades vendidas</th>
+              <th>Total vendido</th>
             </tr>
           </thead>
           <tbody id="tabla-top-productos">
-            <tr><td colspan="5" class="empty-state">Cargando estadísticas...</td></tr>
+            <tr><td colspan="5" class="empty-state">Cargando datos...</td></tr>
           </tbody>
         </table>
       </div>
